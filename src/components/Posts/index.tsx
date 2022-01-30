@@ -6,8 +6,9 @@ import {
   Avatar,
   Box,
   Flex,
-  Link,
+  Badge,
 } from "@chakra-ui/react";
+import { Heart } from "./Heart";
 
 export function Posts({ authorId, body, created_at }: Post): JSX.Element {
   return (
@@ -18,21 +19,22 @@ export function Posts({ authorId, body, created_at }: Post): JSX.Element {
       p={"1rem"}
       overflow={"hidden"}
     >
+      <Flex justify={"flex-end"}>
+        <Heart />
+      </Flex>
       <Flex justify={"flex-start"} alignItems={"center"} p={"md"}>
         <Avatar
           size={"lg"}
-          src={
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-          }
+          name="Matheus Filype"
           alt={"Author"}
-          css={{
-            border: "2px solid white",
-          }}
           marginRight={"1rem"}
         />
         <Flex flexDir={"column"}>
           <Heading fontSize={"2xl"} fontFamily={"body"}>
-            Lindsey James
+            Lindsey James{" "}
+            <Badge ml="1" colorScheme="green">
+              New
+            </Badge>
           </Heading>
           <Text color={useColorModeValue("gray.700", "gray.400")}>{body}</Text>
         </Flex>
