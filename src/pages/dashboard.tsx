@@ -20,12 +20,28 @@ export default function Dashboard(): JSX.Element {
     supabase
       .from("posts")
       .select("*")
+      .order("id", { ascending: false })
       .then((response) => {
         const { data } = response;
 
         setPosts(data);
       });
+
+    listenRealTimePosts((newMessage: Post) => {
+      setPosts((prev) => [...prev, newMessage]);
+    });
   }, []);
+
+  function listenRealTimePosts(newMessage) {
+    supabase
+      .from("posts")
+      .on("INSERT", (data) => {
+        const { new: newPost } = data;
+
+        newMessage(newPost as Post);
+      })
+      .subscribe();
+  }
 
   return (
     <>
