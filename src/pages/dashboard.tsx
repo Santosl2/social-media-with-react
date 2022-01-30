@@ -47,7 +47,7 @@ export default function Dashboard(): JSX.Element {
     <>
       <Header />
 
-      <Box maxWidth={"1440px"} margin={"0 auto"} p={"1rem"}>
+      <Box maxWidth={"1100px"} margin={"0 auto"} p={"1rem"}>
         {posts?.map((items) => {
           return (
             <Posts

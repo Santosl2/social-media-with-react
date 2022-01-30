@@ -31,7 +31,7 @@ export function Posts({ authorId, body, created_at }: Post): JSX.Element {
         />
         <Flex flexDir={"column"}>
           <Heading fontSize={"2xl"} fontFamily={"body"}>
-            Lindsey James{" "}
+            Matheus Filype{" "}
             <Badge ml="1" colorScheme="green">
               New
             </Badge>
