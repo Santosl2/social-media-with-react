@@ -17,7 +17,6 @@ import { supabase } from "../../utils/supabase";
 
 export default function LoginForm(): JSX.Element {
   const email = useRef<HTMLInputElement>(null);
-  const password = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
 
@@ -26,10 +25,11 @@ export default function LoginForm(): JSX.Element {
 
     setIsLoading(true);
 
+    console.log(email.current.value);
+
     try {
-      const { error, user } = await supabase.auth.signIn({
+      const { error } = await supabase.auth.signIn({
         email: email.current.value,
-        password: password.current.value,
       });
 
       if (error) {
@@ -41,7 +41,18 @@ export default function LoginForm(): JSX.Element {
           duration: 9000,
           isClosable: true,
         });
+
+        return;
       }
+
+      toast({
+        title: error.status,
+        description: "Check your email for the login link!",
+        variant: "left-accent",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
     } catch {
     } finally {
       setIsLoading(false);
