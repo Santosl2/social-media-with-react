@@ -45,19 +45,19 @@ export default function Dashboard({ postsData }: Props): JSX.Element {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-  ctx: GetServerSidePropsContext
-) => {
-  let loadPosts: Post[];
+export const getServerSideProps: GetServerSideProps = withAuth(
+  async (ctx: GetServerSidePropsContext) => {
+    let loadPosts: Post[];
 
-  try {
-    const { data } = await api.get<Post[]>("/loadAllPosts");
-    loadPosts = data;
-  } catch {}
+    try {
+      const { data } = await api.get<Post[]>("/loadAllPosts");
+      loadPosts = data;
+    } catch {}
 
-  return {
-    props: {
-      postsData: loadPosts,
-    },
-  };
-};
+    return {
+      props: {
+        postsData: loadPosts,
+      },
+    };
+  }
+);
