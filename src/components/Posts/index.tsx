@@ -61,6 +61,7 @@ export function Posts({ id, authorId, body, created_at }: Post): JSX.Element {
       rounded={"md"}
       p={"1rem"}
       overflow={"hidden"}
+      marginBottom={"1rem"}
     >
       <Flex justify={"flex-end"}>
         <Heart onClick={updateVote} voted={isVoted} />
