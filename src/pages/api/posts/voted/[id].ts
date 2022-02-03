@@ -7,14 +7,13 @@ export default async function verifyVoted(
   res: NextApiResponse
 ) {
   const { id } = req.query;
-
-  if (!id) {
-    return res.status(404).redirect("/404");
-  }
-
   const {
     user: { id: userId },
   } = await supabase.auth.api.getUserByCookie(req);
+
+  if (!id || userId) {
+    return res.status(404).redirect("/404");
+  }
 
   const query = supabase.from("posts_likes");
   const { data } = await query
@@ -38,7 +37,7 @@ export default async function verifyVoted(
       // If contains, so delete
       if (data) {
         await query.delete().match({ post_id: id, user_id: userId });
-        return res.status(204).send("");
+        return res.status(201).send("");
       }
       break;
 
