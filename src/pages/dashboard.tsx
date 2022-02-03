@@ -1,8 +1,11 @@
 import { Box } from "@chakra-ui/react";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { Posts } from "../components/Posts";
+import withAuth from "../hocs/withAuth";
 import { useAuth } from "../hooks/useAuth";
+import { api } from "../services/api";
 import { supabase } from "../utils/supabase";
 
 export type Post = {
@@ -12,43 +15,21 @@ export type Post = {
   created_at: string;
 };
 
-export default function Dashboard(): JSX.Element {
+type Props = {
+  postsData: {
+    data: Post[];
+  };
+};
+
+export default function Dashboard({ postsData }: Props): JSX.Element {
   const { session } = useAuth();
-  const [posts, setPosts] = useState<Post[]>();
-
-  useEffect(() => {
-    supabase
-      .from("posts")
-      .select("*")
-      .order("id", { ascending: false })
-      .then((response) => {
-        const { data } = response;
-
-        setPosts(data);
-      });
-
-    listenRealTimePosts((newMessage: Post) => {
-      setPosts((prev) => [...prev, newMessage]);
-    });
-  }, []);
-
-  function listenRealTimePosts(newMessage) {
-    supabase
-      .from("posts")
-      .on("INSERT", (data) => {
-        const { new: newPost } = data;
-
-        newMessage(newPost as Post);
-      })
-      .subscribe();
-  }
 
   return (
     <>
       <Header />
 
       <Box maxWidth={"1100px"} margin={"0 auto"} p={"1rem"}>
-        {posts?.map((items) => {
+        {postsData.data?.map((items) => {
           return (
             <Posts
               key={items.id}
@@ -63,3 +44,20 @@ export default function Dashboard(): JSX.Element {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  let loadPosts: Post[];
+
+  try {
+    const { data } = await api.get<Post[]>("/loadAllPosts");
+    loadPosts = data;
+  } catch {}
+
+  return {
+    props: {
+      postsData: loadPosts,
+    },
+  };
+};
