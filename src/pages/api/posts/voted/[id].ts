@@ -11,7 +11,7 @@ export default async function verifyVoted(
     user: { id: userId },
   } = await supabase.auth.api.getUserByCookie(req);
 
-  if (!id || userId) {
+  if (!id || !userId) {
     return res.status(404).redirect("/404");
   }
 
