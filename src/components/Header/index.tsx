@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import {
   Box,
   Flex,
@@ -16,10 +16,12 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Modal,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
+import { ModalPublish } from "../ModalPublish";
 
-const Links = ["Dashboard", "Projects", "Team"];
+const Links = ["Dashboard", "Discover"];
 
 const NavLink = ({ children }: { children: ReactNode }): JSX.Element => (
   <Link
@@ -30,7 +32,7 @@ const NavLink = ({ children }: { children: ReactNode }): JSX.Element => (
       textDecoration: "none",
       bg: useColorModeValue("gray.200", "gray.700"),
     }}
-    href={"#"}
+    href={children.toLocaleString().toLowerCase()}
   >
     {children}
   </Link>
@@ -38,6 +40,13 @@ const NavLink = ({ children }: { children: ReactNode }): JSX.Element => (
 
 export function Header(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: modalIsOpen,
+    onOpen: modalOnOpen,
+    onClose: modalOnClose,
+  } = useDisclosure();
+  const initialRef = useRef();
+  const finalRef = useRef();
 
   return (
     <>
@@ -51,7 +60,7 @@ export function Header(): JSX.Element {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>FakeSocial</Box>
+            <Box>fSocial</Box>
             <HStack
               as={"nav"}
               spacing={4}
@@ -69,8 +78,9 @@ export function Header(): JSX.Element {
               size={"sm"}
               mr={4}
               leftIcon={<AddIcon />}
+              onClick={modalIsOpen ? modalOnClose : modalOnOpen}
             >
-              Action
+              Add Post
             </Button>
             <Menu>
               <MenuButton
@@ -80,12 +90,7 @@ export function Header(): JSX.Element {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
+                <Avatar size={"sm"} name="Matheus Filype" alt={"Author"} />
               </MenuButton>
               <MenuList>
                 <MenuItem>My account</MenuItem>
@@ -107,6 +112,15 @@ export function Header(): JSX.Element {
           </Box>
         ) : null}
       </Box>
+
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={modalIsOpen}
+        onClose={modalOnClose}
+      >
+        <ModalPublish />
+      </Modal>
     </>
   );
 }
