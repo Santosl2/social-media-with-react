@@ -9,8 +9,51 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { Heart } from "./Heart";
+import { useEffect, useState } from "react";
+import { api } from "../../services/api";
 
-export function Posts({ authorId, body, created_at }: Post): JSX.Element {
+type VotedResponse = {
+  voted: boolean;
+};
+
+export function Posts({ id, authorId, body, created_at }: Post): JSX.Element {
+  // verify user voted
+  const [isVoted, setIsVoted] = useState(false);
+
+  async function updateVote() {
+    setIsVoted((prev) => !prev);
+
+    try {
+      if (!isVoted) {
+        await api.post(`/posts/voted/${id}`);
+        return;
+      }
+
+      await api.delete(`/posts/voted/${id}`);
+    } catch {
+      return false;
+    }
+  }
+
+  async function verifyUserVoted() {
+    try {
+      const { data } = await api.get<VotedResponse>(`/posts/voted/${id}`);
+      return data.voted;
+    } catch {
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    verifyUserVoted()
+      .then((response) => {
+        setIsVoted(response);
+      })
+      .catch(() => {
+        setIsVoted(false);
+      });
+  }, []);
+
   return (
     <Box
       bg={useColorModeValue("white", "gray.800")}
@@ -20,7 +63,7 @@ export function Posts({ authorId, body, created_at }: Post): JSX.Element {
       overflow={"hidden"}
     >
       <Flex justify={"flex-end"}>
-        <Heart />
+        <Heart onClick={updateVote} voted={isVoted} />
       </Flex>
       <Flex justify={"flex-start"} alignItems={"center"} p={"md"}>
         <Avatar

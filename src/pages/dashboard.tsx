@@ -1,12 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { Posts } from "../components/Posts";
 import withAuth from "../hocs/withAuth";
-import { useAuth } from "../hooks/useAuth";
 import { api } from "../services/api";
-import { supabase } from "../utils/supabase";
 
 export type Post = {
   id?: string;
@@ -22,8 +19,6 @@ type Props = {
 };
 
 export default function Dashboard({ postsData }: Props): JSX.Element {
-  const { session } = useAuth();
-
   return (
     <>
       <Header />
