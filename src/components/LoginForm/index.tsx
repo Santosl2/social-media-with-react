@@ -25,8 +25,6 @@ export default function LoginForm(): JSX.Element {
 
     setIsLoading(true);
 
-    console.log(email.current.value);
-
     try {
       const { error } = await supabase.auth.signIn({
         email: email.current.value,
