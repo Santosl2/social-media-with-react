@@ -16,7 +16,7 @@ type VotedResponse = {
   voted: boolean;
 };
 
-export function Posts({ id, authorId, body, created_at }: Post): JSX.Element {
+export function Posts({ id, body }: Post): JSX.Element {
   // verify user voted
   const [isVoted, setIsVoted] = useState(false);
 

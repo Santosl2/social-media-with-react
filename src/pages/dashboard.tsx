@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     let loadPosts: Post[];
 
     try {
-      const { data } = await api.get<Post[]>("/loadAllPosts");
+      const { data } = await api.get<Post[]>("/posts");
       loadPosts = data;
     } catch {}
 
