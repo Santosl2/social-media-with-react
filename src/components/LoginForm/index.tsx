@@ -4,15 +4,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
   Heading,
   Text,
   useColorModeValue,
-  FormHelperText,
-  FormErrorMessage,
   useToast,
 } from "@chakra-ui/react";
 import { BaseSyntheticEvent, FormEvent, useRef, useState } from "react";
@@ -78,19 +75,7 @@ export default function LoginForm(): JSX.Element {
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input type="email" id="email" ref={email} />
               </FormControl>
-              <FormControl isRequired>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Input type="password" id="password" ref={password} />
-              </FormControl>
               <Stack spacing={10}>
-                <Stack
-                  direction={{ base: "column", sm: "row" }}
-                  align={"start"}
-                  justify={"space-between"}
-                >
-                  <Checkbox>Remember me</Checkbox>
-                  <Link color={"blue.400"}>Forgot password?</Link>
-                </Stack>
                 <Button
                   isLoading={isLoading}
                   loadingText="Submitting"
