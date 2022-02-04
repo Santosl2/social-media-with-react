@@ -2,6 +2,7 @@ import { setup } from "axios-cache-adapter";
 
 import localforage from "localforage";
 import memoryDriver from "localforage-memoryStorageDriver";
+import { getURLCached } from "./nonCache";
 
 localforage.defineDriver(memoryDriver);
 const localforageStore = localforage.createInstance({
