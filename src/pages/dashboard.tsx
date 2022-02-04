@@ -39,7 +39,7 @@ export default function Dashboard({ postsData }: Props): JSX.Element {
     <>
       <Header />
 
-      <Box maxWidth={"1100px"} margin={"0 auto"} p={"1rem"}>
+      <Box maxWidth={"1000px"} margin={"0 auto"} p={"1rem"}>
         {postsData.data?.map((items) => {
           return (
             <Posts
